@@ -262,3 +262,57 @@ body {
     justify-content: flex-start;
   }
 }
+
+/* ===== 报告预览 Modal ===== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  width: min(1000px, 96vw);
+  height: min(700px, 90vh);
+  background: #020617;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.9);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.modal-header-title {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #f97373;
+}
+
+.modal-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #020617;
+}
