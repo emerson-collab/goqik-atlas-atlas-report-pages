@@ -1,0 +1,61 @@
+name: Sync reports & evol law from std-center
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout web repo
+        uses: actions/checkout@v4
+
+      - name: Clone std-center repo (read-only)
+        env:
+          CENTER_REPO_PAT: ${{ secrets.CENTER_REPO_PAT }}
+        run: |
+          git clone --depth=1 \
+            https://x-access-token:${CENTER_REPO_PAT}@github.com/goqik-atlas/q-ss-b-layer-std-center.git \
+            center
+
+      - name: Sync HTML reports
+        run: |
+          mkdir -p reports data
+          if ls center/reports/*.html >/dev/null 2>&1; then
+            cp center/reports/*.html reports/
+            echo "copied center/reports/*.html -> reports/"
+          else
+            echo "no HTML reports found in center/reports"
+          fi
+
+          if [ -f center/reports/index.json ]; then
+            cp center/reports/index.json data/reports.json
+            echo "copied center/reports/index.json -> data/reports.json"
+          else
+            echo "center/reports/index.json not found"
+          fi
+
+      - name: Sync evol law text (SS/LAW/ss/*.evol.txt)
+        run: |
+          mkdir -p law-evol/ss
+          if ls center/SS/LAW/ss/*.evol.txt >/dev/null 2>&1; then
+            cp center/SS/LAW/ss/*.evol.txt law-evol/ss/
+            echo "copied center/SS/LAW/ss/*.evol.txt -> law-evol/ss/"
+          else
+            echo "no *.evol.txt found in center/SS/LAW/ss"
+          fi
+
+      - name: Commit & push if there are changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git config user.name "atlas-sync-bot"
+          git config user.email "atlas-sync-bot@users.noreply.github.com"
+
+          git add reports law-evol data/reports.json
+          git commit -m "Sync reports & evol law from q-ss-b-layer-std-center"
+          git push
