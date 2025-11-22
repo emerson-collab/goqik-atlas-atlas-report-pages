@@ -3,104 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <title>GoQik Atlas · 标准演化报告中心</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      background: #020817;
-      color: #e2e8f0;
+      font-family: -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+      background: #020617;
+      color: #e5e7eb;
     }
-    a { color: inherit; text-decoration: none; }
-
-    .page {
+    .app-shell {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-
-    .header {
+    header {
+      padding: 16px 32px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 16px 24px;
-      border-bottom: 1px solid #1e293b;
-      background: radial-gradient(circle at top left, #0f172a, #020617);
+      justify-content: space-between;
+      border-bottom: 1px solid #1f2937;
+      background: radial-gradient(circle at top left,#0f172a,#020617);
     }
-    .logo-pill {
-      display: inline-flex;
+    .brand {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      font-weight: 600;
+      gap: 12px;
       font-size: 18px;
+      font-weight: 600;
     }
-    .logo-dot {
-      width: 10px;
-      height: 10px;
+    .brand-pill {
+      padding: 6px 14px;
       border-radius: 999px;
-      background: #38bdf8;
-      box-shadow: 0 0 12px rgba(56,189,248,.8);
+      background: #0ea5e9;
+      color: #0b1120;
+      font-weight: 700;
+      box-shadow: 0 0 25px rgba(56,189,248,.65);
     }
-    .header-title {
+    .brand-sub {
       font-size: 18px;
       color: #e5e7eb;
     }
-
-    .tabs {
-      margin-left: auto;
+    .nav-tabs {
       display: flex;
       gap: 8px;
-      font-size: 13px;
+      font-size: 14px;
+    }
+    .nav-tab {
+      padding: 6px 14px;
       border-radius: 999px;
-      padding: 4px;
-      background: rgba(15,23,42,.85);
       border: 1px solid #1f2937;
+      color: #9ca3af;
+      background: rgba(15,23,42,.8);
     }
-    .tab {
-      padding: 4px 10px;
-      border-radius: 999px;
-      color: #94a3b8;
-    }
-    .tab--active {
+    .nav-tab.active {
       background: #0ea5e9;
       color: #0b1120;
-      font-weight: 600;
+      border-color: #38bdf8;
     }
 
-    .main {
+    main {
       flex: 1;
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
+      padding: 24px 32px 32px;
+      display: flex;
       gap: 24px;
-      padding: 20px 24px 32px;
     }
 
-    .sidebar {
-      border-radius: 18px;
-      border: 1px solid #1e293b;
-      background: radial-gradient(circle at top left, rgba(15,23,42,.9), rgba(15,23,42,.7));
-      padding: 18px 18px 22px;
+    .panel {
+      background: radial-gradient(circle at top,#020617,#020617);
+      border-radius: 24px;
+      border: 1px solid #1f2937;
+      padding: 20px 22px;
+      box-shadow:
+        0 18px 40px rgba(15,23,42,.95),
+        0 0 0 1px rgba(148,163,184,.04);
     }
-    .sidebar-title {
-      font-size: 15px;
+
+    .panel-left {
+      width: 320px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-size: 18px;
       font-weight: 600;
       margin-bottom: 12px;
     }
-    .field {
-      margin-bottom: 14px;
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
     }
-    .field-label {
-      font-size: 12px;
+
+    label {
+      font-size: 13px;
       color: #9ca3af;
-      margin-bottom: 4px;
     }
-    .input, .select {
+
+    input[type="text"],
+    input[type="number"],
+    select {
       width: 100%;
-      padding: 7px 10px;
+      padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid #1f2937;
       background: #020617;
@@ -108,524 +123,433 @@
       font-size: 13px;
       outline: none;
     }
-    .input:focus, .select:focus {
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 1px rgba(14,165,233,.4);
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56,189,248,.4);
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 7px 18px;
+      padding: 9px 18px;
       border-radius: 999px;
-      border: 0;
-      font-size: 13px;
+      border: 1px solid transparent;
+      font-size: 14px;
       cursor: pointer;
-      transition: transform .08s ease, box-shadow .08s ease, background .08s ease;
+      transition: all .16s ease-out;
       white-space: nowrap;
+      user-select: none;
     }
     .btn-primary {
-      background: linear-gradient(135deg, #0ea5e9, #22c55e);
-      color: #0b1120;
+      background: linear-gradient(90deg,#22c55e,#14b8a6);
+      color: #022c22;
       font-weight: 600;
-      width: 100%;
-      margin-top: 6px;
+      box-shadow: 0 14px 30px rgba(34,197,94,.45);
     }
     .btn-primary:hover {
+      filter: brightness(1.05);
       transform: translateY(-1px);
-      box-shadow: 0 10px 25px rgba(59,130,246,.35);
+      box-shadow: 0 18px 38px rgba(34,197,94,.6);
     }
 
-    .sidebar-footer {
-      margin-top: 16px;
-      padding-top: 10px;
-      border-top: 1px dashed #1f2937;
-      font-size: 12px;
-      color: #9ca3af;
-      line-height: 1.5;
+    .btn-ghost {
+      background: transparent;
+      color: #e5e7eb;
+      border-color: #1f2937;
     }
-    .sidebar-footer strong { color: #e5e7eb; }
-
-    .content {
-      border-radius: 18px;
-      border: 1px solid #1e293b;
-      background: radial-gradient(circle at top right, rgba(15,23,42,.95), rgba(15,23,42,.8));
-      padding: 18px 18px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .content-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .content-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .content-sub {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 2px;
-    }
-
-    .tag-pill {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid #1e293b;
-      color: #9ca3af;
-    }
-
-    .list {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card {
-      border-radius: 16px;
-      border: 1px solid #1e293b;
-      background: radial-gradient(circle at top left, #020617, #020617);
-      padding: 14px 16px 12px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) auto;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .card-meta {
-      font-size: 12px;
-      color: #9ca3af;
-      line-height: 1.5;
+    .btn-ghost:hover {
+      background: rgba(15,23,42,.9);
+      border-color: #4b5563;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
+      justify-content: center;
+      padding: 3px 10px;
       border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid #1f2937;
-      margin-right: 4px;
+      font-size: 12px;
+      border: 1px solid transparent;
     }
-    .badge-label {
+    .badge-muted {
+      border-color: #1f2937;
       color: #9ca3af;
-      margin-right: 2px;
+      background: rgba(15,23,42,.9);
     }
-    .badge-fail {
+    .badge-danger {
+      border-color: rgba(248,113,113,.5);
       color: #fecaca;
-      border-color: rgba(248,113,113,.4);
-      background: rgba(127,29,29,.35);
+      background: rgba(153,27,27,.8);
     }
-    .badge-pass {
+    .badge-success {
+      border-color: rgba(34,197,94,.5);
       color: #bbf7d0;
-      border-color: rgba(34,197,94,.45);
-      background: rgba(22,101,52,.5);
+      background: rgba(22,101,52,.8);
     }
 
-    .score-text {
+    .version-card {
+      border-radius: 20px;
+      border: 1px solid #1f2937;
+      background: radial-gradient(circle at 0 0,rgba(56,189,248,.06),#020617);
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .version-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .version-title {
+      font-size: 17px;
       font-weight: 600;
+      color: #f9fafb;
     }
-    .score-text--warn { color: #f97316; }
-    .score-text--ok   { color: #22c55e; }
-
-    .card-links {
-      font-size: 11px;
+    .version-meta-row {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      color: #9ca3af;
+      flex-wrap: wrap;
+    }
+    .version-source-row {
+      margin-top: 4px;
+      font-size: 12px;
       color: #9ca3af;
       line-height: 1.6;
     }
-    .card-links span {
+    .version-source-row span {
       display: inline-block;
       margin-right: 12px;
     }
-
-    .card-actions {
+    .version-actions {
+      margin-top: 10px;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      justify-content: center;
-      align-items: flex-end;
-    }
-    .btn-secondary {
-      background: #020617;
-      color: #e5e7eb;
-      border: 1px solid #1f2937;
-      padding-inline: 14px;
-    }
-    .btn-secondary:hover {
-      background: #0f172a;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(15,23,42,.7);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: #93c5fd;
-      border: 0;
-      padding-inline: 10px;
-    }
-    .btn-ghost:hover {
-      background: rgba(30,64,175,.4);
-      transform: translateY(-1px);
+      justify-content: flex-end;
+      gap: 8px;
     }
 
-    .empty {
-      padding: 36px 12px;
-      text-align: center;
+    .explain-text {
       font-size: 13px;
       color: #9ca3af;
+      line-height: 1.6;
     }
 
-    /* Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
+    .score-highlight {
+      color: #f97316;
+      font-weight: 600;
     }
-    .modal-backdrop.modal--open {
-      display: flex;
+
+    dialog::backdrop {
+      background: rgba(15,23,42,.85);
+      backdrop-filter: blur(6px);
     }
-    .modal {
-      width: min(1000px, 96vw);
-      height: min(640px, 90vh);
-      background: #020617;
+    dialog {
+      border: none;
       border-radius: 18px;
-      border: 1px solid #1e293b;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 0;
+      max-width: 1080px;
+      width: 90vw;
+      height: 80vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: 0 25px 60px rgba(15,23,42,1);
     }
-    .modal-header {
-      padding: 10px 14px;
-      border-bottom: 1px solid #1e293b;
+    .dialog-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid #1f2937;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      background: radial-gradient(circle at top left,#0f172a,#020617);
     }
-    .modal-title {
-      font-size: 14px;
-      font-weight: 600;
+    .dialog-header h3 {
+      font-size: 15px;
     }
-    .modal-sub {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 2px;
-    }
-    .modal-close {
-      border-radius: 999px;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
-      width: 30px;
-      height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .modal-close:hover {
-      background: #0f172a;
-    }
-    .modal-body {
+    .dialog-body {
       flex: 1;
-      padding: 0;
-      background: #0b1120;
+      border: none;
     }
-    .modal-iframe {
+    .dialog-body iframe {
       width: 100%;
       height: 100%;
       border: none;
-      background: #ffffff;
+      background: #020617;
     }
 
     @media (max-width: 960px) {
-      .main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .card {
-        grid-template-columns: minmax(0, 1fr);
-        align-items: flex-start;
-      }
-      .card-actions {
-        flex-direction: row;
-        justify-content: flex-start;
-      }
+      main { flex-direction: column; }
+      .panel-left { width: 100%; }
     }
   </style>
 </head>
 <body>
-<div class="page">
-  <header class="header">
-    <div class="logo-pill">
-      <span class="logo-dot"></span>
-      <span>GoQik Atlas</span>
+<div class="app-shell">
+  <header>
+    <div class="brand">
+      <div class="brand-pill">GoQik Atlas</div>
+      <div class="brand-sub">标准演化报告中心</div>
     </div>
-    <div class="header-title">标准演化报告中心</div>
-
-    <div class="tabs">
-      <div class="tab tab--active">B-layer QSPEC · Law · QEVR · Gate</div>
+    <div class="nav-tabs">
+      <div class="nav-tab active">B-layer QSPEC · Law · QEVR · Gate</div>
+      <div class="nav-tab">B-layer 自演化 · 只读观测</div>
     </div>
   </header>
 
-  <main class="main">
-    <aside class="sidebar">
-      <div class="sidebar-title">过滤器</div>
+  <main>
+    <!-- 左侧：过滤器 -->
+    <aside class="panel panel-left">
+      <div>
+        <div class="section-title">过滤器</div>
+        <div class="filter-group">
+          <div>
+            <label for="domainInput">域 / 标准：</label>
+            <input id="domainInput" type="text" placeholder="例如：SS.LAW.NAMR" />
+          </div>
 
-      <div class="field">
-        <div class="field-label">域 / 标准：</div>
-        <input id="filter-domain" class="input" placeholder="例如：SS.LAW.NAMR" />
+          <div>
+            <label for="gateSelect">Gate 状态：</label>
+            <select id="gateSelect">
+              <option value="all">全部</option>
+              <option value="pass">仅通过</option>
+              <option value="fail">仅未通过</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="minScoreInput">最小得分：</label>
+            <input
+              id="minScoreInput"
+              type="number"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.90"
+            />
+          </div>
+
+          <button id="resetFilterBtn" class="btn btn-primary">重置过滤</button>
+        </div>
       </div>
 
-      <div class="field">
-        <div class="field-label">Gate 状态：</div>
-        <select id="filter-gate" class="select">
-          <option value="all">全部</option>
-          <option value="pass">已通过</option>
-          <option value="fail">未通过</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <div class="field-label">最小得分：</div>
-        <input id="filter-min-score" class="input" value="0.90" />
-      </div>
-
-      <button id="btn-apply-filter" class="btn btn-primary">
-        重置过滤
-      </button>
-
-      <div class="sidebar-footer">
-        本页面仅展示 <strong>机读规则演化结果</strong> 的摘要。
-        具体细节请点击记录右侧的「查看 HTML 报告」。
+      <div>
+        <div class="section-title" style="margin-bottom:8px;">说明</div>
+        <p class="explain-text">
+          本页面仅展示 <strong>机读规则演化结果</strong> 的摘要。<br />
+          具体细节请点击每条记录右侧的「查看 HTML 报告」。
+        </p>
       </div>
     </aside>
 
-    <section class="content">
-      <div class="content-header">
-        <div>
-          <div class="content-title">演化版本一览</div>
-          <div class="content-sub">
-            <span id="summary-count">共 0 条演化记录</span>
-          </div>
-        </div>
-        <div class="tag-pill">B-layer 自演化 · 只读观测</div>
-      </div>
-
-      <div id="report-list" class="list">
-        <div class="empty">正在加载报告列表...</div>
+    <!-- 右侧：演化版本列表 -->
+    <section class="panel panel-right">
+      <div class="section-title">演化版本一览</div>
+      <div id="versionList">
+        <!-- 由脚本填充 -->
       </div>
     </section>
   </main>
-</div>
 
-<!-- 报告预览 Modal -->
-<div id="report-modal-backdrop" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div id="modal-title" class="modal-title">HTML 报告预览</div>
-        <div id="modal-sub" class="modal-sub"></div>
-      </div>
-      <button id="modal-close" class="modal-close">&times;</button>
+  <!-- HTML 报告预览弹窗 -->
+  <dialog id="htmlDialog">
+    <div class="dialog-header">
+      <h3 id="htmlDialogTitle">HTML 报告预览</h3>
+      <button class="btn btn-ghost" onclick="closeHtmlDialog()">关闭</button>
     </div>
-    <div class="modal-body">
-      <iframe id="report-iframe" class="modal-iframe" src="about:blank"></iframe>
+    <div class="dialog-body">
+      <iframe id="htmlDialogFrame" src=""></iframe>
     </div>
-  </div>
+  </dialog>
 </div>
 
 <script>
-  const state = {
-    allReports: [],
-    filtered: []
+  const REPORTS_JSON_URL = 'data/reports.json';
+
+  let allReports = [];
+  let filteredReports = [];
+
+  const els = {
+    domainInput: document.getElementById('domainInput'),
+    gateSelect: document.getElementById('gateSelect'),
+    minScoreInput: document.getElementById('minScoreInput'),
+    resetFilterBtn: document.getElementById('resetFilterBtn'),
+    versionList: document.getElementById('versionList'),
+    htmlDialog: document.getElementById('htmlDialog'),
+    htmlDialogTitle: document.getElementById('htmlDialogTitle'),
+    htmlDialogFrame: document.getElementById('htmlDialogFrame'),
   };
 
-  function badgeGate(report) {
-    const pass = report.gate_status === 'pass';
-    const cls = pass ? 'badge badge-pass' : 'badge badge-fail';
-    const label = pass ? '已通过' : '未通过';
-    return { cls, label };
-  }
-
-  function scoreClass(report) {
-    if (!report.overall_score) return '';
-    return report.overall_score >= (report.threshold || 0.9)
-      ? 'score-text score-text--ok'
-      : 'score-text score-text--warn';
-  }
-
-  function formatScore(report) {
-    if (typeof report.overall_score !== 'number') return '—';
-    const thr = typeof report.threshold === 'number' ? report.threshold.toFixed(2) : '—';
-    return `${report.overall_score.toFixed(2)} / ${thr}`;
-  }
-
-  function formatTime(ts) {
-    if (!ts) return '—';
+  async function loadReports() {
     try {
-      const d = new Date(ts);
-      return d.toISOString().slice(0,19).replace('T',' ');
-    } catch {
-      return ts;
+      const resp = await fetch(REPORTS_JSON_URL + '?_=' + Date.now());
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const data = await resp.json();
+      if (!Array.isArray(data)) throw new Error('invalid JSON');
+      allReports = data;
+      applyFilters();
+    } catch (err) {
+      console.error('Failed to load reports.json:', err);
+      els.versionList.innerHTML =
+        '<p class="explain-text">加载 reports.json 失败，请确认文件已通过同步工作流生成。</p>';
     }
   }
 
-  function renderList() {
-    const list = document.getElementById('report-list');
-    list.innerHTML = '';
+  function getFilters() {
+    const domain = (els.domainInput.value || '').trim();
+    const gate = els.gateSelect.value;
 
-    if (!state.filtered.length) {
-      list.innerHTML = '<div class="empty">没有符合条件的演化记录。</div>';
-      document.getElementById('summary-count').textContent = '共 0 条演化记录';
-      return;
-    }
+    let minScore = parseFloat(els.minScoreInput.value);
+    if (isNaN(minScore)) minScore = 0;
 
-    document.getElementById('summary-count').textContent =
-      '共 ' + state.filtered.length + ' 条演化记录';
-
-    state.filtered.forEach((r) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-
-      const left = document.createElement('div');
-      left.innerHTML = `
-        <div class="card-title">${r.title || r.id}</div>
-        <div class="card-meta">
-          域：${r.domain || '-'} · 版本：${r.id || '-'}<br/>
-          最近更新：${formatTime(r.updated_at)}
-        </div>
-      `;
-
-      const mid = document.createElement('div');
-      const gate = badgeGate(r);
-      mid.innerHTML = `
-        <div style="margin-bottom:4px;">
-          <span class="${gate.cls}">
-            <span class="badge-label">Gate：</span>${gate.label}
-          </span>
-          <span class="badge">
-            <span class="badge-label">Score：</span>
-            <span class="${scoreClass(r)}">${formatScore(r)}</span>
-          </span>
-        </div>
-        <div class="card-links">
-          <span>Law: ${r.law_file || '-'}</span><br/>
-          <span>QSPEC: ${r.qspec_file || '-'}</span><br/>
-          <span>QEVR: ${r.qevr_file || '-'}</span>
-        </div>
-      `;
-
-      const actions = document.createElement('div');
-      actions.className = 'card-actions';
-
-      const btnView = document.createElement('button');
-      btnView.className = 'btn btn-secondary';
-      btnView.textContent = '查看 HTML 报告';
-      btnView.onclick = () => openReportModal(r);
-
-      const btnUpload = document.createElement('button');
-      btnUpload.className = 'btn btn-ghost';
-      btnUpload.textContent = '上传新草案（预留接口）';
-      btnUpload.onclick = () => {
-        alert('上传接口会对接你的私有 API，这里只是预留按钮。');
-      };
-
-      actions.appendChild(btnView);
-      actions.appendChild(btnUpload);
-
-      card.appendChild(left);
-      card.appendChild(mid);
-      card.appendChild(actions);
-
-      list.appendChild(card);
-    });
+    return { domain, gate, minScore };
   }
 
-  function applyFilter() {
-    const domain = document.getElementById('filter-domain').value.trim().toUpperCase();
-    const gate = document.getElementById('filter-gate').value;
-    const minScoreStr = document.getElementById('filter-min-score').value.trim();
-    const minScore = minScoreStr ? parseFloat(minScoreStr) : 0;
+  function applyFilters() {
+    const { domain, gate, minScore } = getFilters();
 
-    state.filtered = state.allReports.filter((r) => {
-      if (domain && !(r.domain || '').toUpperCase().includes(domain)) return false;
+    filteredReports = allReports.filter((r) => {
+      // 域 / 标准过滤（前缀匹配即可）
+      if (domain && !(r.domain || '').toUpperCase().startsWith(domain.toUpperCase())) {
+        return false;
+      }
+
+      // Gate 过滤
       if (gate === 'pass' && r.gate_status !== 'pass') return false;
       if (gate === 'fail' && r.gate_status !== 'fail') return false;
-      if (typeof r.overall_score === 'number' && r.overall_score < minScore) return false;
+
+      // 分数过滤
+      const score = Number(r.overall_score ?? 0);
+      if (score < minScore) return false;
+
       return true;
     });
 
     renderList();
   }
 
-  function resetFilterUI() {
-    document.getElementById('filter-domain').value = '';
-    document.getElementById('filter-gate').value = 'all';
-    document.getElementById('filter-min-score').value = '0.90';
+  function renderList() {
+    const list = els.versionList;
+    if (!filteredReports.length) {
+      list.innerHTML =
+        '<p class="explain-text">当前过滤条件下没有可展示的演化记录。</p>';
+      return;
+    }
+
+    const html = filteredReports
+      .map((r) => {
+        const gateBadges = r.gate_status === 'pass'
+          ? '<span class="badge badge-success">Gate：已通过</span>'
+          : '<span class="badge badge-danger">Gate：未通过</span>';
+
+        const score = (r.overall_score ?? 0).toFixed(2);
+        const threshold = (r.threshold ?? 0).toFixed(2);
+
+        return `
+          <div class="version-card">
+            <div class="version-header-line">
+              <div class="version-title">${r.title || '未命名演化版本'}</div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                ${gateBadges}
+                <span class="badge badge-muted">
+                  Score：<span class="score-highlight">${score}</span> / ${threshold}
+                </span>
+              </div>
+            </div>
+
+            <div class="version-meta-row">
+              <span>域：${r.domain || '-'}</span>
+              <span>版本：${r.id || '-'}</span>
+              <span>最近更新：${r.updated_at || '-'}</span>
+            </div>
+
+            <div class="version-source-row">
+              <span><strong>Law:</strong> ${r.law_file || '-'}</span>
+              <span><strong>QSPEC:</strong> ${r.qspec_file || '-'}</span>
+              <span><strong>QEVR:</strong> ${r.qevr_file || '-'}</span>
+            </div>
+
+            <div class="version-actions">
+              <button
+                class="btn btn-ghost"
+                onclick="handleUploadDraft('${encodeURIComponent(
+                  r.domain || ''
+                )}')"
+              >
+                上传新草案（预留接口）
+              </button>
+
+              <button
+                class="btn btn-primary"
+                onclick="openHtmlReport('${encodeURIComponent(
+                  r.report_html || ''
+                )}','${r.title || ''}')"
+              >
+                查看 HTML 报告
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .join('\n');
+
+    list.innerHTML = html;
   }
 
-  function openReportModal(report) {
-    const backdrop = document.getElementById('report-modal-backdrop');
-    const iframe = document.getElementById('report-iframe');
-    const titleEl = document.getElementById('modal-title');
-    const subEl = document.getElementById('modal-sub');
-
-    titleEl.textContent = report.title || 'HTML 报告预览';
-    subEl.textContent = 'Law / QSPEC / QEVR / Gate 演化版本：' + (report.id || '');
-
-    // 关键点：使用相对路径，确保在 GitHub Pages 子路径下也能打开
-    iframe.src = report.report_html ? ('./' + report.report_html.replace(/^\.\//, '')) : 'about:blank';
-
-    backdrop.classList.add('modal--open');
+  // 查看 HTML 报告：用 dialog + iframe 打开
+  function openHtmlReport(reportPathEncoded, title) {
+    const reportPath = decodeURIComponent(reportPathEncoded || '');
+    if (!reportPath) {
+      alert('当前记录没有配置 report_html 路径。');
+      return;
+    }
+    els.htmlDialogTitle.textContent = title || 'HTML 报告预览';
+    els.htmlDialogFrame.src = reportPath;
+    els.htmlDialog.showModal();
   }
 
-  function closeModal() {
-    const backdrop = document.getElementById('report-modal-backdrop');
-    const iframe = document.getElementById('report-iframe');
-    iframe.src = 'about:blank';
-    backdrop.classList.remove('modal--open');
+  function closeHtmlDialog() {
+    els.htmlDialog.close();
+    els.htmlDialogFrame.src = 'about:blank';
   }
 
-  document.getElementById('btn-apply-filter').addEventListener('click', () => {
-    resetFilterUI();
-    applyFilter();
+  // 上传新草案入口：跳转到中心仓库 SS/LAW/ss 上传页
+  function handleUploadDraft(domainEncoded) {
+    const domain = decodeURIComponent(domainEncoded || '');
+    const uploadUrl =
+      'https://github.com/goqik-atlas/q-ss-b-layer-std-center/upload/main/SS/LAW/ss';
+
+    const msg =
+      '上传接口会把草案落到中心仓库 SS/LAW/ss 目录。\n' +
+      '提交 Commit 后，GitHub Actions 会自动：\n' +
+      '1）用 deepseek-chat 自演化 3 轮；\n' +
+      '2）若分数不足，再用 deepseek-reasoner 追加最多 2 轮；\n' +
+      '3）无论是否过 Gate，都会生成演化版法规 + QSPEC + QEVR + HTML 报告，并同步回本页面。';
+
+    alert(msg);
+    window.open(uploadUrl, '_blank');
+  }
+
+  // 绑定事件
+  els.domainInput.addEventListener('input', applyFilters);
+  els.gateSelect.addEventListener('change', applyFilters);
+  els.minScoreInput.addEventListener('input', applyFilters);
+  els.resetFilterBtn.addEventListener('click', () => {
+    els.domainInput.value = '';
+    els.gateSelect.value = 'all';
+    els.minScoreInput.value = '0.90';
+    applyFilters();
   });
 
-  document.getElementById('modal-close').addEventListener('click', closeModal);
-  document.getElementById('report-modal-backdrop').addEventListener('click', (e) => {
-    if (e.target.id === 'report-modal-backdrop') closeModal();
-  });
-
-  // 初始化：加载 JSON
-  fetch('./data/reports.json')
-    .then((res) => res.json())
-    .then((data) => {
-      state.allReports = Array.isArray(data) ? data : [];
-      state.filtered = state.allReports.slice();
-      renderList();
-    })
-    .catch((err) => {
-      console.error('加载 reports.json 失败', err);
-      const list = document.getElementById('report-list');
-      list.innerHTML = '<div class="empty">加载报告列表失败，请检查 data/reports.json 是否存在。</div>';
-    });
+  loadReports();
 </script>
 </body>
 </html>
