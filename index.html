@@ -3,97 +3,148 @@
 <head>
   <meta charset="UTF-8" />
   <title>GoQik Atlas · 标准演化报告中心</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
-      background: #020617;
-      color: #e5e7eb;
+    :root {
+      --bg-main: #020617;
+      --bg-panel: #020617;
+      --bg-card: #020617;
+      --bg-chip-fail: #3f1b26;
+      --bg-chip-pass: #0f5132;
+      --bg-chip-neutral: #1e293b;
+      --border-subtle: #1e293b;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #22d3ee;
+      --accent-soft: #1d4ed8;
+      --danger: #f97373;
+      --danger-soft: #3f1b26;
+      --radius-lg: 24px;
+      --radius-md: 999px;
     }
-    .app-shell {
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
       min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #0f172a 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      padding: 20px 32px 32px;
       display: flex;
       flex-direction: column;
+      gap: 24px;
     }
-    header {
-      padding: 16px 32px;
+
+    .page-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #1f2937;
-      background: radial-gradient(circle at top left,#0f172a,#020617);
+      gap: 16px;
     }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .brand-pill {
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: #0ea5e9;
-      color: #0b1120;
-      font-weight: 700;
-      box-shadow: 0 0 25px rgba(56,189,248,.65);
-    }
-    .brand-sub {
-      font-size: 18px;
-      color: #e5e7eb;
-    }
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-      font-size: 14px;
-    }
-    .nav-tab {
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid #1f2937;
-      color: #9ca3af;
-      background: rgba(15,23,42,.8);
-    }
-    .nav-tab.active {
-      background: #0ea5e9;
-      color: #0b1120;
-      border-color: #38bdf8;
     }
 
-    main {
-      flex: 1;
-      padding: 24px 32px 32px;
+    .brand-badge {
+      background: linear-gradient(120deg, #0ea5e9, #22c55e);
+      color: #0f172a;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.3), 0 18px 45px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-tabs {
       display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.88);
+      padding: 4px;
+      border-radius: 999px;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.8);
+    }
+
+    .nav-pill {
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: default;
+      user-select: none;
+    }
+
+    .nav-pill.active {
+      background: linear-gradient(120deg, #0ea5e9, #22c55e);
+      color: #020617;
+      font-weight: 600;
+    }
+
+    .tag-pill {
+      border-radius: 999px;
+      border: 1px solid #1e293b;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22d3ee;
+    }
+
+    .page-body {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
       gap: 24px;
+      align-items: stretch;
     }
 
     .panel {
-      background: radial-gradient(circle at top,#020617,#020617);
-      border-radius: 24px;
-      border: 1px solid #1f2937;
-      padding: 20px 22px;
-      box-shadow:
-        0 18px 40px rgba(15,23,42,.95),
-        0 0 0 1px rgba(148,163,184,.04);
+      background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 20px 20px 18px;
+      box-shadow: 0 18px 60px rgba(15, 23, 42, 0.9);
     }
 
-    .panel-left {
-      width: 320px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+    .panel + .panel {
+      margin-top: 10px;
     }
 
-    .panel-right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    /* 左侧过滤器 */
 
-    .section-title {
+    .panel-title {
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 12px;
@@ -102,454 +153,721 @@
     .filter-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
+      gap: 16px;
+      margin-top: 8px;
     }
 
-    label {
-      font-size: 13px;
-      color: #9ca3af;
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    input[type="text"],
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 8px 10px;
+    .field-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .field-input,
+    .field-select {
+      background: rgba(15, 23, 42, 0.95);
       border-radius: 999px;
       border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
+      padding: 10px 14px;
+      color: var(--text-main);
       font-size: 13px;
       outline: none;
+      width: 100%;
     }
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    select:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px rgba(56,189,248,.4);
+
+    .field-input::placeholder {
+      color: #4b5563;
+    }
+
+    .field-input:focus,
+    .field-select:focus {
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.5);
+    }
+
+    .field-inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field-inline input[type="number"] {
+      max-width: 120px;
     }
 
     .btn {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 18px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all .16s ease-out;
-      white-space: nowrap;
-      user-select: none;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg,#22c55e,#14b8a6);
-      color: #022c22;
-      font-weight: 600;
-      box-shadow: 0 14px 30px rgba(34,197,94,.45);
-    }
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-      box-shadow: 0 18px 38px rgba(34,197,94,.6);
+      gap: 6px;
+      transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.08s ease;
     }
 
-    .btn-ghost {
-      background: transparent;
-      color: #e5e7eb;
-      border-color: #1f2937;
+    .btn-primary {
+      background: linear-gradient(120deg, #0ea5e9, #22c55e);
+      color: #020617;
+      width: 100%;
+      box-shadow: 0 14px 35px rgba(34, 211, 238, 0.5);
+      margin-top: 6px;
     }
-    .btn-ghost:hover {
-      background: rgba(15,23,42,.9);
-      border-color: #4b5563;
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 10px 22px rgba(34, 211, 238, 0.35);
+    }
+
+    .help-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 14px;
+    }
+
+    .help-text strong {
+      color: #e5e7eb;
+    }
+
+    /* 右侧列表 */
+
+    .main-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .main-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .main-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .main-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     .badge {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid transparent;
-    }
-    .badge-muted {
-      border-color: #1f2937;
-      color: #9ca3af;
-      background: rgba(15,23,42,.9);
-    }
-    .badge-danger {
-      border-color: rgba(248,113,113,.5);
-      color: #fecaca;
-      background: rgba(153,27,27,.8);
-    }
-    .badge-success {
-      border-color: rgba(34,197,94,.5);
-      color: #bbf7d0;
-      background: rgba(22,101,52,.8);
+      gap: 6px;
+      border: 1px solid #1f2937;
+      color: var(--text-muted);
     }
 
-    .version-card {
-      border-radius: 20px;
-      border: 1px solid #1f2937;
-      background: radial-gradient(circle at 0 0,rgba(56,189,248,.06),#020617);
-      padding: 18px 18px 16px;
+    .main-list {
+      margin-top: 10px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
     }
-    .version-header-line {
+
+    .record-card {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      border: 1px solid #111827;
+      padding: 16px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 18px 60px rgba(15, 23, 42, 0.85);
+    }
+
+    .record-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
     }
-    .version-title {
+
+    .record-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .record-title {
       font-size: 17px;
       font-weight: 600;
-      color: #f9fafb;
     }
-    .version-meta-row {
-      display: flex;
-      gap: 12px;
+
+    .record-meta {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-muted);
+    }
+
+    .chip-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       flex-wrap: wrap;
     }
-    .version-source-row {
-      margin-top: 4px;
+
+    .chip {
+      border-radius: 999px;
+      padding: 3px 12px;
       font-size: 12px;
-      color: #9ca3af;
-      line-height: 1.6;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-    .version-source-row span {
-      display: inline-block;
-      margin-right: 12px;
+
+    .chip-label {
+      font-size: 11px;
+      opacity: 0.8;
     }
-    .version-actions {
-      margin-top: 10px;
+
+    .chip-gate-fail {
+      background: var(--bg-chip-fail);
+      color: #fecaca;
+    }
+
+    .chip-gate-pass {
+      background: var(--bg-chip-pass);
+      color: #bbf7d0;
+    }
+
+    .chip-score {
+      background: #111827;
+      color: #fbbf24;
+    }
+
+    .chip-score span {
+      font-weight: 600;
+    }
+
+    .chip-score small {
+      opacity: 0.65;
+    }
+
+    .chip-gate-fail .dot,
+    .chip-gate-pass .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .record-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .record-body-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .record-body-label {
+      min-width: 46px;
+      color: #6b7280;
+    }
+
+    .record-actions {
+      margin-top: 8px;
       display: flex;
       justify-content: flex-end;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .explain-text {
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
       font-size: 13px;
-      color: #9ca3af;
-      line-height: 1.6;
+      padding: 6px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .score-highlight {
-      color: #f97316;
-      font-weight: 600;
+    .btn-ghost:hover {
+      border-color: #22d3ee;
+      color: #a5f3fc;
     }
 
-    dialog::backdrop {
-      background: rgba(15,23,42,.85);
+    .btn-ghost.secondary {
+      border-style: dashed;
+      color: #a5b4fc;
+    }
+
+    .btn-ghost.secondary:hover {
+      border-color: #4f46e5;
+      color: #c7d2fe;
+    }
+
+    .empty-state {
+      padding: 24px;
+      border-radius: 18px;
+      border: 1px dashed #1f2937;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .empty-state strong {
+      color: #e5e7eb;
+    }
+
+    /* HTML 预览弹层 */
+
+    .html-preview-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.68);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
       backdrop-filter: blur(6px);
     }
-    dialog {
-      border: none;
-      border-radius: 18px;
+
+    .html-preview-inner {
+      width: 96%;
+      max-width: 1280px;
+      height: 88vh;
       background: #020617;
-      color: #e5e7eb;
-      padding: 0;
-      max-width: 1080px;
-      width: 90vw;
-      height: 80vh;
+      border-radius: 24px;
+      border: 1px solid #1e293b;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 26px 90px rgba(0, 0, 0, 0.95);
       overflow: hidden;
-      box-shadow: 0 25px 60px rgba(15,23,42,1);
     }
-    .dialog-header {
-      padding: 14px 18px;
-      border-bottom: 1px solid #1f2937;
+
+    .html-preview-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid #1e293b;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      background: radial-gradient(circle at top left,#0f172a,#020617);
+      font-size: 14px;
     }
-    .dialog-header h3 {
-      font-size: 15px;
+
+    .html-preview-header span {
+      font-weight: 500;
     }
-    .dialog-body {
+
+    #html-preview-close {
+      border-radius: 999px;
+      border: 1px solid #1e293b;
+      padding: 5px 16px;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    #html-preview-close:hover {
+      border-color: #22d3ee;
+      color: #a5f3fc;
+    }
+
+    .html-preview-body {
       flex: 1;
-      border: none;
+      background: #020617;
     }
-    .dialog-body iframe {
+
+    #html-report-frame {
+      border: none;
       width: 100%;
       height: 100%;
-      border: none;
       background: #020617;
     }
 
     @media (max-width: 960px) {
-      main { flex-direction: column; }
-      .panel-left { width: 100%; }
+      .page {
+        padding: 16px;
+      }
+
+      .page-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-<div class="app-shell">
-  <header>
-    <div class="brand">
-      <div class="brand-pill">GoQik Atlas</div>
-      <div class="brand-sub">标准演化报告中心</div>
-    </div>
-    <div class="nav-tabs">
-      <div class="nav-tab active">B-layer QSPEC · Law · QEVR · Gate</div>
-      <div class="nav-tab">B-layer 自演化 · 只读观测</div>
-    </div>
-  </header>
+  <div class="page">
+    <header class="page-header">
+      <div class="brand">
+        <div class="brand-badge">GoQik Atlas</div>
+        <div class="brand-title">标准演化报告中心</div>
+      </div>
+      <div class="nav-tabs">
+        <div class="nav-pill active">B-layer QSPEC · Law · QEVR · Gate</div>
+        <div class="nav-pill">
+          <span class="tag-pill">
+            <span class="tag-dot"></span>
+            B-layer 自演化 · 只读观测
+          </span>
+        </div>
+      </div>
+    </header>
 
-  <main>
-    <!-- 左侧：过滤器 -->
-    <aside class="panel panel-left">
-      <div>
-        <div class="section-title">过滤器</div>
+    <main class="page-body">
+      <!-- 左侧过滤器 -->
+      <section class="panel">
+        <h2 class="panel-title">过滤器</h2>
         <div class="filter-group">
-          <div>
-            <label for="domainInput">域 / 标准：</label>
-            <input id="domainInput" type="text" placeholder="例如：SS.LAW.NAMR" />
-          </div>
-
-          <div>
-            <label for="gateSelect">Gate 状态：</label>
-            <select id="gateSelect">
-              <option value="all">全部</option>
-              <option value="pass">仅通过</option>
-              <option value="fail">仅未通过</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="minScoreInput">最小得分：</label>
+          <div class="field">
+            <div class="field-label">域 / 标准</div>
             <input
-              id="minScoreInput"
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              value="0.90"
+              id="domain-filter"
+              class="field-input"
+              placeholder="例如：SS.LAW.NAMR"
             />
           </div>
 
-          <button id="resetFilterBtn" class="btn btn-primary">重置过滤</button>
+          <div class="field">
+            <div class="field-label">Gate 状态</div>
+            <select id="gate-filter" class="field-select">
+              <option value="all">全部</option>
+              <option value="pass">通过</option>
+              <option value="fail">未通过</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <div class="field-label">最小得分</div>
+            <div class="field-inline">
+              <input
+                id="min-score-input"
+                class="field-input"
+                type="number"
+                step="0.01"
+                min="0"
+                max="1"
+                value="0.90"
+              />
+            </div>
+            <button id="apply-filter-btn" class="btn btn-primary">
+              重置过滤
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <div class="section-title" style="margin-bottom:8px;">说明</div>
-        <p class="explain-text">
+        <p class="help-text">
           本页面仅展示 <strong>机读规则演化结果</strong> 的摘要。<br />
-          具体细节请点击每条记录右侧的「查看 HTML 报告」。
+          具体细节请点击记录右侧的「<strong>查看 HTML 报告</strong>」。
         </p>
+      </section>
+
+      <!-- 右侧主面板 -->
+      <section class="panel">
+        <div class="main-panel-header">
+          <div class="main-title-block">
+            <div class="main-title">演化版本一览</div>
+            <div id="summary-text" class="main-subtitle">共 0 条演化记录</div>
+          </div>
+          <div class="badge">
+            Gate 阈值来自 QGATE/QEVR 配置
+          </div>
+        </div>
+
+        <div id="records-list" class="main-list">
+          <div class="empty-state">
+            正在加载报告数据……
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- HTML 报告预览弹层 -->
+  <div
+    id="html-preview-modal"
+    class="html-preview-modal"
+    aria-hidden="true"
+    style="display: none;"
+  >
+    <div class="html-preview-inner">
+      <div class="html-preview-header">
+        <span>HTML 报告预览</span>
+        <button id="html-preview-close">关闭</button>
       </div>
-    </aside>
-
-    <!-- 右侧：演化版本列表 -->
-    <section class="panel panel-right">
-      <div class="section-title">演化版本一览</div>
-      <div id="versionList">
-        <!-- 由脚本填充 -->
+      <div class="html-preview-body">
+        <iframe
+          id="html-report-frame"
+          src="about:blank"
+          sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+        ></iframe>
       </div>
-    </section>
-  </main>
-
-  <!-- HTML 报告预览弹窗 -->
-  <dialog id="htmlDialog">
-    <div class="dialog-header">
-      <h3 id="htmlDialogTitle">HTML 报告预览</h3>
-      <button class="btn btn-ghost" onclick="closeHtmlDialog()">关闭</button>
     </div>
-    <div class="dialog-body">
-      <iframe id="htmlDialogFrame" src=""></iframe>
-    </div>
-  </dialog>
-</div>
+  </div>
 
-<script>
-  const REPORTS_JSON_URL = 'data/reports.json';
+  <script>
+    // ---------- HTML 报告预览：打开 / 关闭 ----------
+    (function () {
+      const modal = document.getElementById("html-preview-modal");
+      const closeBtn = document.getElementById("html-preview-close");
+      const iframe = document.getElementById("html-report-frame");
 
-  let allReports = [];
-  let filteredReports = [];
+      if (!modal || !closeBtn || !iframe) return;
 
-  const els = {
-    domainInput: document.getElementById('domainInput'),
-    gateSelect: document.getElementById('gateSelect'),
-    minScoreInput: document.getElementById('minScoreInput'),
-    resetFilterBtn: document.getElementById('resetFilterBtn'),
-    versionList: document.getElementById('versionList'),
-    htmlDialog: document.getElementById('htmlDialog'),
-    htmlDialogTitle: document.getElementById('htmlDialogTitle'),
-    htmlDialogFrame: document.getElementById('htmlDialogFrame'),
-  };
-
-  async function loadReports() {
-    try {
-      const resp = await fetch(REPORTS_JSON_URL + '?_=' + Date.now());
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      const data = await resp.json();
-      if (!Array.isArray(data)) throw new Error('invalid JSON');
-      allReports = data;
-      applyFilters();
-    } catch (err) {
-      console.error('Failed to load reports.json:', err);
-      els.versionList.innerHTML =
-        '<p class="explain-text">加载 reports.json 失败，请确认文件已通过同步工作流生成。</p>';
-    }
-  }
-
-  function getFilters() {
-    const domain = (els.domainInput.value || '').trim();
-    const gate = els.gateSelect.value;
-
-    let minScore = parseFloat(els.minScoreInput.value);
-    if (isNaN(minScore)) minScore = 0;
-
-    return { domain, gate, minScore };
-  }
-
-  function applyFilters() {
-    const { domain, gate, minScore } = getFilters();
-
-    filteredReports = allReports.filter((r) => {
-      // 域 / 标准过滤（前缀匹配即可）
-      if (domain && !(r.domain || '').toUpperCase().startsWith(domain.toUpperCase())) {
-        return false;
+      function openHtmlPreview(url) {
+        iframe.src = url;
+        modal.style.display = "flex";
+        modal.setAttribute("aria-hidden", "false");
       }
 
-      // Gate 过滤
-      if (gate === 'pass' && r.gate_status !== 'pass') return false;
-      if (gate === 'fail' && r.gate_status !== 'fail') return false;
+      function hideHtmlPreview() {
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        iframe.src = "about:blank";
+      }
 
-      // 分数过滤
-      const score = Number(r.overall_score ?? 0);
-      if (score < minScore) return false;
+      closeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        hideHtmlPreview();
+      });
 
-      return true;
-    });
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          hideHtmlPreview();
+        }
+      });
 
-    renderList();
-  }
+      window.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          hideHtmlPreview();
+        }
+      });
 
-  function renderList() {
-    const list = els.versionList;
-    if (!filteredReports.length) {
-      list.innerHTML =
-        '<p class="explain-text">当前过滤条件下没有可展示的演化记录。</p>';
-      return;
-    }
+      window.openHtmlPreview = openHtmlPreview;
+      window.hideHtmlPreview = hideHtmlPreview;
+    })();
 
-    const html = filteredReports
-      .map((r) => {
-        const gateBadges = r.gate_status === 'pass'
-          ? '<span class="badge badge-success">Gate：已通过</span>'
-          : '<span class="badge badge-danger">Gate：未通过</span>';
+    // ---------- 报告数据加载 & 过滤 ----------
+    (function () {
+      const listEl = document.getElementById("records-list");
+      const summaryEl = document.getElementById("summary-text");
+      const domainInput = document.getElementById("domain-filter");
+      const gateSelect = document.getElementById("gate-filter");
+      const minScoreInput = document.getElementById("min-score-input");
+      const applyBtn = document.getElementById("apply-filter-btn");
 
-        const score = (r.overall_score ?? 0).toFixed(2);
-        const threshold = (r.threshold ?? 0).toFixed(2);
+      let allItems = [];
 
-        return `
-          <div class="version-card">
-            <div class="version-header-line">
-              <div class="version-title">${r.title || '未命名演化版本'}</div>
-              <div style="display:flex;gap:8px;align-items:center;">
-                ${gateBadges}
-                <span class="badge badge-muted">
-                  Score：<span class="score-highlight">${score}</span> / ${threshold}
-                </span>
-              </div>
-            </div>
+      function formatDate(iso) {
+        if (!iso) return "";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return iso;
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day + " 00:00:00Z";
+      }
 
-            <div class="version-meta-row">
-              <span>域：${r.domain || '-'}</span>
-              <span>版本：${r.id || '-'}</span>
-              <span>最近更新：${r.updated_at || '-'}</span>
-            </div>
+      function render() {
+        const domainKeyword = (domainInput.value || "").trim().toLowerCase();
+        const gate = gateSelect.value;
 
-            <div class="version-source-row">
-              <span><strong>Law:</strong> ${r.law_file || '-'}</span>
-              <span><strong>QSPEC:</strong> ${r.qspec_file || '-'}</span>
-              <span><strong>QEVR:</strong> ${r.qevr_file || '-'}</span>
-            </div>
+        let minScore = parseFloat(minScoreInput.value);
+        if (Number.isNaN(minScore)) {
+          minScore = 0;
+        }
 
-            <div class="version-actions">
-              <button
-                class="btn btn-ghost"
-                onclick="handleUploadDraft('${encodeURIComponent(
-                  r.domain || ''
-                )}')"
-              >
-                上传新草案（预留接口）
-              </button>
+        const filtered = allItems.filter((item) => {
+          if (
+            domainKeyword &&
+            !String(item.domain || "")
+              .toLowerCase()
+              .includes(domainKeyword)
+          ) {
+            return false;
+          }
 
-              <button
-                class="btn btn-primary"
-                onclick="openHtmlReport('${encodeURIComponent(
-                  r.report_html || ''
-                )}','${r.title || ''}')"
-              >
-                查看 HTML 报告
-              </button>
-            </div>
-          </div>
-        `;
-      })
-      .join('\n');
+          if (gate === "pass" && item.gate_status !== "pass") return false;
+          if (gate === "fail" && item.gate_status !== "fail") return false;
 
-    list.innerHTML = html;
-  }
+          const score = typeof item.overall_score === "number"
+            ? item.overall_score
+            : parseFloat(item.overall_score || "0");
 
-  // 查看 HTML 报告：用 dialog + iframe 打开
-  function openHtmlReport(reportPathEncoded, title) {
-    const reportPath = decodeURIComponent(reportPathEncoded || '');
-    if (!reportPath) {
-      alert('当前记录没有配置 report_html 路径。');
-      return;
-    }
-    els.htmlDialogTitle.textContent = title || 'HTML 报告预览';
-    els.htmlDialogFrame.src = reportPath;
-    els.htmlDialog.showModal();
-  }
+          if (!Number.isNaN(minScore) && score < minScore) return false;
 
-  function closeHtmlDialog() {
-    els.htmlDialog.close();
-    els.htmlDialogFrame.src = 'about:blank';
-  }
+          return true;
+        });
 
-  // 上传新草案入口：跳转到中心仓库 SS/LAW/ss 上传页
-  function handleUploadDraft(domainEncoded) {
-    const domain = decodeURIComponent(domainEncoded || '');
-    const uploadUrl =
-      'https://github.com/goqik-atlas/q-ss-b-layer-std-center/upload/main/SS/LAW/ss';
+        summaryEl.textContent = "共 " + filtered.length + " 条演化记录";
 
-    const msg =
-      '上传接口会把草案落到中心仓库 SS/LAW/ss 目录。\n' +
-      '提交 Commit 后，GitHub Actions 会自动：\n' +
-      '1）用 deepseek-chat 自演化 3 轮；\n' +
-      '2）若分数不足，再用 deepseek-reasoner 追加最多 2 轮；\n' +
-      '3）无论是否过 Gate，都会生成演化版法规 + QSPEC + QEVR + HTML 报告，并同步回本页面。';
+        if (filtered.length === 0) {
+          listEl.innerHTML =
+            '<div class="empty-state">当前过滤条件下没有可见记录。请尝试降低最小得分或切换 Gate 状态。</div>';
+          return;
+        }
 
-    alert(msg);
-    window.open(uploadUrl, '_blank');
-  }
+        const html = filtered
+          .map((item) => {
+            const gatePass = item.gate_status === "pass";
+            const gateLabel = gatePass ? "通过" : "未通过";
+            const scoreText =
+              (typeof item.overall_score === "number"
+                ? item.overall_score.toFixed(2)
+                : item.overall_score) || "-";
+            const thresholdText =
+              item.threshold != null ? String(item.threshold) : "-";
 
-  // 绑定事件
-  els.domainInput.addEventListener('input', applyFilters);
-  els.gateSelect.addEventListener('change', applyFilters);
-  els.minScoreInput.addEventListener('input', applyFilters);
-  els.resetFilterBtn.addEventListener('click', () => {
-    els.domainInput.value = '';
-    els.gateSelect.value = 'all';
-    els.minScoreInput.value = '0.90';
-    applyFilters();
-  });
+            const lawFile = item.law_file || "-";
+            const evolLawFile = item.evol_law || "-";
+            const qspecFile = item.qspec_file || "-";
+            const qevrFile = item.qevr_file || "-";
+            const updated = formatDate(item.updated_at);
 
-  loadReports();
-</script>
+            return (
+              '<article class="record-card">' +
+              '<div class="record-top">' +
+              '<div class="record-title-block">' +
+              '<div class="record-title">' +
+              (item.title || item.id || "未命名演化版本") +
+              "</div>" +
+              '<div class="record-meta">' +
+              "域：" +
+              (item.domain || "-") +
+              " · 版本：" +
+              (item.id || "-") +
+              (updated ? " · 最近更新：" + updated : "") +
+              "</div>" +
+              "</div>" +
+              '<div class="chip-row">' +
+              '<div class="chip ' +
+              (gatePass ? "chip-gate-pass" : "chip-gate-fail") +
+              '">' +
+              '<span class="chip-label">Gate</span>' +
+              '<span class="dot"></span>' +
+              "<span>" +
+              gateLabel +
+              "</span>" +
+              "</div>" +
+              '<div class="chip chip-score">' +
+              '<span>Score: ' +
+              scoreText +
+              "</span>" +
+              '<small> / ' +
+              thresholdText +
+              "</small>" +
+              "</div>" +
+              "</div>" +
+              "</div>" +
+              '<div class="record-body">' +
+              '<div class="record-body-row"><span class="record-body-label">Law:</span><span>' +
+              lawFile +
+              "</span></div>" +
+              '<div class="record-body-row"><span class="record-body-label">QSPEC:</span><span>' +
+              qspecFile +
+              "</span></div>" +
+              '<div class="record-body-row"><span class="record-body-label">QEVR:</span><span>' +
+              qevrFile +
+              "</span></div>" +
+              (evolLawFile
+                ? '<div class="record-body-row"><span class="record-body-label">EVOL:</span><span>' +
+                  evolLawFile +
+                  "</span></div>"
+                : "") +
+              "</div>" +
+              '<div class="record-actions">' +
+              '<button class="btn-ghost secondary" data-upload-id="' +
+              (item.id || "") +
+              '">上传新草案（预留接口）</button>' +
+              '<button class="btn-ghost" data-report-html="' +
+              (item.report_html || "") +
+              '">查看 HTML 报告</button>' +
+              "</div>" +
+              "</article>"
+            );
+          })
+          .join("");
+
+        listEl.innerHTML = html;
+
+        // 绑定按钮事件
+        listEl.querySelectorAll("[data-report-html]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const url = btn.getAttribute("data-report-html") || "";
+            if (!url) {
+              alert("该记录尚未生成 HTML 报告。");
+              return;
+            }
+            if (window.openHtmlPreview) {
+              window.openHtmlPreview(url);
+            } else {
+              window.open(url, "_blank");
+            }
+          });
+        });
+
+        listEl.querySelectorAll("[data-upload-id]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-upload-id") || "";
+            alert(
+              "上传接口会对接你的私有 API，这里只是预留按钮。\n\n记录 ID: " +
+                id
+            );
+          });
+        });
+      }
+
+      function attachListeners() {
+        applyBtn.addEventListener("click", () => {
+          render();
+        });
+
+        domainInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            render();
+          }
+        });
+      }
+
+      async function loadData() {
+        try {
+          const resp = await fetch("data/reports.json", { cache: "no-store" });
+          if (!resp.ok) {
+            throw new Error("HTTP " + resp.status);
+          }
+          const json = await resp.json();
+          allItems = Array.isArray(json) ? json : [];
+        } catch (err) {
+          console.error(err);
+          listEl.innerHTML =
+            '<div class="empty-state">加载 <code>data/reports.json</code> 失败，请检查 GitHub Pages 是否已同步最新数据。</div>';
+          return;
+        }
+        render();
+      }
+
+      attachListeners();
+      loadData();
+    })();
+  </script>
 </body>
 </html>
