@@ -1,0 +1,16 @@
+[
+  {
+    "id": "namr-v0800",
+    "domain": "SS.LAW.NAMR",
+    "title": "NAMR 文件名法规演化 V0800",
+    "law_file": "SS/LAW/ss/Q.SS.LAW.NAMR.文件名法规.V3106.txt",
+    "evol_law": "SS/LAW/ss/Q.SS.LAW.NAMR.文件名法规.V3200.evol.txt",
+    "qspec_file": "SS/QSPEC/ss/qspec.ss-law-namr.v8.qspec",
+    "qevr_file": "QEVR/ss/b-layer/qevr.ss-law-namr.qspec-quality.V0800.qevr.json",
+    "report_html": "reports/namr-evol-V0800.html",
+    "overall_score": 0.88,
+    "threshold": 0.90,
+    "gate_status": "fail",
+    "updated_at": "2025-11-22T00:00:00Z"
+  }
+]
