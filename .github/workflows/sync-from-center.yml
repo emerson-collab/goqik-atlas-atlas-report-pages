@@ -14,7 +14,7 @@ jobs:
       - name: Checkout web repo
         uses: actions/checkout@v4
 
-      - name: Checkout std-center repo (read-only)
+      - name: Checkout std-center (read-only)
         uses: actions/checkout@v4
         with:
           repository: goqik-atlas/q-ss-b-layer-std-center
@@ -25,37 +25,36 @@ jobs:
         run: |
           set -e
 
-          # 确保目标目录存在
           mkdir -p reports
           mkdir -p law-evol/ss
           mkdir -p data
 
-          echo "[sync] copy HTML reports..."
-          cp std-center/reports/*.html reports/ 2>/dev/null || true
+          echo "[sync] copy reports/* -> reports/"
+          if [ -d std-center/reports ]; then
+            cp -R std-center/reports/* reports/ 2>/dev/null || true
+          fi
 
-          echo "[sync] copy reports index.json -> reports/ & data/"
+          echo "[sync] copy index.json -> data/reports.json"
           if [ -f std-center/reports/index.json ]; then
-            cp std-center/reports/index.json reports/index.json
             cp std-center/reports/index.json data/reports.json
           fi
 
-          echo "[sync] copy evol law text..."
-          cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/ 2>/dev/null || true
+          echo "[sync] copy *.evol.txt -> law-evol/ss/"
+          if ls std-center/SS/LAW/ss/*.evol.txt >/dev/null 2>&1; then
+            cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/
+          fi
 
       - name: Commit & push if there are changes
         run: |
           set -e
-
           if git diff --quiet; then
             echo "[sync] No changes to commit"
             exit 0
           fi
 
-          git config user.name "atlas-sync-bot"
+          git config user.name  "atlas-sync-bot"
           git config user.email "atlas-sync-bot@users.noreply.github.com"
 
-          # ★ 关键：明确把 reports / law-evol / data 全部加入提交
-          git add reports law-evol data
-
-          git commit -m "chore: mirror reports & evol law from std-center"
+          git add reports law-evol data/reports.json
+          git commit -m "chore: sync reports & evol law from std-center"
           git push origin main
