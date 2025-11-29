@@ -1,6 +1,7 @@
-name: Sync reports & configs from std-center
+name: Sync reports & evol law from std-center
 
 on:
+  # 手动触发；后面你愿意再加 schedule 也可以
   workflow_dispatch:
 
 permissions:
@@ -11,84 +12,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 当前 web / report 仓库
       - name: Checkout web repo
         uses: actions/checkout@v4
 
-      # 2. 只读拉取 std-center 仓库到子目录 std-center/
-      # 需要在本仓库 Settings -> Secrets -> Actions 中配置
-      #   STD_CENTER_PAT  (只读 repo 权限即可)
       - name: Clone std-center repo (read-only)
-        uses: actions/checkout@v4
-        with:
-          repository: goqik-atlas/q-ss-b-layer-std-center
-          path: std-center
-          token: ${{ secrets.STD_CENTER_PAT }}
-
-      # 3. 全覆盖同步 reports 目录（与 std-center/reports 保持一致）
-      - name: Sync reports directory from std-center
+        env:
+          CENTER_REPO_PAT: ${{ secrets.CENTER_REPO_PAT }}
         run: |
-          # 清空本地 reports，再整体拷贝
-          rm -rf reports
+          set -e
+          git clone \
+            https://x-access-token:${CENTER_REPO_PAT}@github.com/goqik-atlas/q-ss-b-layer-std-center.git \
+            std-center
+
+      - name: Sync HTML reports
+        run: |
+          set -e
           mkdir -p reports
+          cp std-center/reports/*.html reports/ 2>/dev/null || true
 
-          if [ -d std-center/reports ]; then
-            cp -r std-center/reports/* reports/ 2>/dev/null || true
-          fi
+      - name: Sync evol law text (SS/LAW/ss/*.evol.txt)
+        run: |
+          set -e
+          mkdir -p law-evol/ss
+          cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/ 2>/dev/null || true
 
-          # 额外：data/reports.json 作为前端统一入口
+      - name: Sync report index for front-end
+        run: |
+          set -e
           mkdir -p data
           if [ -f std-center/reports/index.json ]; then
             cp std-center/reports/index.json data/reports.json
+          else
+            echo "[]" > data/reports.json
           fi
 
-      # 4. 全覆盖同步 LAW 演化文本（SS/LAW/ss/*.evol.txt -> law-evol/ss）
-      - name: Sync evol law text (SS/LAW/ss/*.evol.txt)
-        run: |
-          rm -rf law-evol/ss
-          mkdir -p law-evol/ss
-          if [ -d std-center/SS/LAW/ss ]; then
-            cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/ 2>/dev/null || true
-          fi
-
-      # 5. 同步 qconfig & qreg 到 data/，作为管理页面的数据源
-      - name: Sync qconfig & qreg configs
-        run: |
-          mkdir -p data
-
-          # qconfig：LAW 报告配置
-          if [ -f std-center/SS/QCONFIG/ss/qevol.law-report-config.qconfig ]; then
-            cp std-center/SS/QCONFIG/ss/qevol.law-report-config.qconfig \
-               data/qevol.law-report-config.qconfig
-          fi
-
-          # qreg：QTYPE 注册表
-          if [ -f std-center/SS/QREG/ss/qtype-registry.qreg ]; then
-            cp std-center/SS/QREG/ss/qtype-registry.qreg \
-               data/qtype-registry.qreg
-
-            # 利用 std-center 自带的 5tools/qreg 展开为 JSON，方便前端管理页使用
-            python3 std-center/tools/5tools/qreg show \
-              std-center/SS/QREG/ss/qtype-registry.qreg \
-              > data/qtype-registry.json
-          fi
-
-      # 6. 有变更则提交并推回 main
       - name: Commit & push if there are changes
         run: |
+          set -e
           if git diff --quiet; then
             echo "No changes to commit"
             exit 0
           fi
 
-          git config user.name "atlas-sync-bot"
+          git config user.name  "atlas-sync-bot"
           git config user.email "atlas-sync-bot@users.noreply.github.com"
 
-          git add reports/ data/ law-evol/
-          git commit -m "Sync reports, qconfig/qreg & evol law from std-center"
-
-          # 避免 non-fast-forward：先 rebase 到远端 main
-          git pull --rebase origin main
-
-          # 再推回 main
+          git add reports/ law-evol/ss data/reports.json
+          git commit -m "Sync reports & evol law from q-ss-b-layer-std-center"
           git push origin main
