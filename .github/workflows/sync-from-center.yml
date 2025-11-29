@@ -1,7 +1,6 @@
 name: Sync reports & evol law from std-center
 
 on:
-  # 手动触发；后面你愿意再加 schedule 也可以
   workflow_dispatch:
 
 permissions:
@@ -15,35 +14,38 @@ jobs:
       - name: Checkout web repo
         uses: actions/checkout@v4
 
-      - name: Clone std-center repo (read-only)
-        env:
-          CENTER_REPO_PAT: ${{ secrets.CENTER_REPO_PAT }}
-        run: |
-          set -e
-          git clone \
-            https://x-access-token:${CENTER_REPO_PAT}@github.com/goqik-atlas/q-ss-b-layer-std-center.git \
-            std-center
+      - name: Checkout std-center (read-only)
+        uses: actions/checkout@v4
+        with:
+          repository: goqik-atlas/q-ss-b-layer-std-center
+          token: ${{ secrets.CENTER_REPO_PAT }}
+          path: std-center
 
-      - name: Sync HTML reports
+      - name: Sync reports & evol law
         run: |
           set -e
+
+          # 1) mirror reports 目录
           mkdir -p reports
-          cp std-center/reports/*.html reports/ 2>/dev/null || true
+          rm -f reports/*
+          if [ -d std-center/reports ]; then
+            cp std-center/reports/*.html reports/ 2>/dev/null || true
+            if [ -f std-center/reports/index.json ]; then
+              cp std-center/reports/index.json reports/index.json
+            fi
+          fi
 
-      - name: Sync evol law text (SS/LAW/ss/*.evol.txt)
-        run: |
-          set -e
+          # 2) mirror evol law 文本
           mkdir -p law-evol/ss
-          cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/ 2>/dev/null || true
+          rm -f law-evol/ss/*
+          if ls std-center/SS/LAW/ss/*.evol.txt >/dev/null 2>&1; then
+            cp std-center/SS/LAW/ss/*.evol.txt law-evol/ss/
+          fi
 
-      - name: Sync report index for front-end
-        run: |
-          set -e
+          # 3) 前端页面读取的数据文件
           mkdir -p data
           if [ -f std-center/reports/index.json ]; then
             cp std-center/reports/index.json data/reports.json
-          else
-            echo "[]" > data/reports.json
           fi
 
       - name: Commit & push if there are changes
@@ -54,9 +56,9 @@ jobs:
             exit 0
           fi
 
-          git config user.name  "atlas-sync-bot"
+          git config user.name "atlas-sync-bot"
           git config user.email "atlas-sync-bot@users.noreply.github.com"
 
-          git add reports/ law-evol/ss data/reports.json
-          git commit -m "Sync reports & evol law from q-ss-b-layer-std-center"
+          git add reports law-evol data/reports.json
+          git commit -m "Sync reports & evol law from std-center"
           git push origin main
